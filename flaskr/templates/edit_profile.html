@@ -1,0 +1,16 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends 'base.html' %}
+
+{% block content %}
+<form method='POST' enctype="multipart/form-data" class="form-signin">
+  <h1 class="jumbotron-heading">プロフィールの編集</h1>
+    <dl>
+      {{ form.csrf_token }}
+      {{ render_field(form.picture_path, class='form-control', value=current_user.picture_path) }}
+      {{ render_field(form.username, class='form-control', value=current_user.username) }}
+      {{ render_field(form.profile_comment,class="form-control", value=current_user.profile_comment) }}
+      {{ form.submit(class="btn btn-lg btn-primary btn-block" ) }}
+    </dl>
+    <a href="{{ url_for('app.home') }}" class="see-more">編集をやめる</a>
+</form>
+{% endblock content %}r

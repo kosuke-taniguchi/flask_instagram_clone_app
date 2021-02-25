@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading"><a href="{{ url_for('app.user_profile', user_id=post.user_id) }}" class="see-post-author">{{ post.author }}</a></h1>
+    <img  src="{{ url_for('static', filename=post.picture_path) }}" class="bd-placeholder-img card-img-top" style="width:400px; height:400px;" >
+    <p class="see-post-content">{{ post.content }}</p>
+    <p class="see-post-content">{{ post.date_posted }}</p>
+    <p class="border-under-post">
+      {% if current_user.has_liked_post(post) %}
+      <a href="{{ url_for('app.likes', post_id=post.id, action='unlike') }}" class="btn btn-sm btn-outline-danger">いいね: {{ post.like_count }}</a>
+      {% else %}
+      <a href="{{ url_for('app.likes', post_id=post.id, action='like') }}" class="btn btn-sm btn-outline-danger">いいね: {{ post.like_count }}</a>
+      {% endif %}
+      {% if current_user.id == post.user_id %}
+        <a href="{{ url_for('app.delete_post', post_id=post.id) }}" class="see-more">投稿の削除</a>
+        <a href="{{ url_for('app.edit_post', post_id=post.id) }}" class="see-more">編集</a>
+        {% else %}
+        {% endif %}
+        <a href="{{ url_for('app.post_comment', post_id=post.id) }}" class="see-more">コメントする</a>
+        {% if has_edited %}
+        <p>編集済み</p>
+        {% endif %}
+    </p>
+
+      {% if comments %}
+      {% for comment in comments %}
+      <div class='post-comment'>
+        <h4 style="font-weight: lighter;"><a href="{{ url_for('app.user_profile', user_id=comment.user_id) }}" class="comment-author">{{ comment.author }}</a></h4>
+        <p>{{ comment.content }}</p>
+        {% if current_user.id == comment.user_id %}
+           <a href="{{ url_for('app.delete_comment', post_id=post.id, comment_id=comment.id) }}" class="see-more">削除</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+    <p>コメントはありません</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock content %}
