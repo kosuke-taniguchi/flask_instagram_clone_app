@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, session
 from flask_login import login_required, login_user, logout_user, current_user
-from flaskr.forms import SignupForm, LoginForm, PostForm, EditProfileForm, CommentForm, EditPostForm, SearchForm
+from flaskr.forms import SignupForm, LoginForm, PostForm, EditProfileForm, CommentForm, EditPostForm, SearchForm, SearchFriendsForm
 from flaskr.models import User, Post, Comment, PostLike
 from datetime import date, datetime
 from flaskr import db
@@ -221,3 +221,13 @@ def liked_posts(user_id):
         post = Post.query.filter(Post.id==post_like.post_id).first()
         posts.append(post)
     return render_template('liked_posts.html', posts=posts, user=user)
+
+@bp.route('/search_friends', methods=['GET', 'POST'])
+@login_required
+def search_friends():
+    page = request.args.get('page', 1, type=int)
+    form = SearchFriendsForm(request.form)
+    users = None
+    if request.method == 'POST' and form.validate():
+        users = User.seach_by_username(form.username.data).paginate(page=page, per_page=10)
+    return render_template('search_friends.html', form=form, users=users)

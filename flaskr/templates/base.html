@@ -184,6 +184,51 @@
       .page-btn {
         width: 100px;
       }
+
+      .following {
+        margin: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+      }
+
+      .following:hover {
+        text-decoration: none;
+        color: black;
+      }
+
+      .user-image-small {
+        width: 100px;
+        border-radius: 50%;
+      }
+
+      .table {
+        width: 76%;
+        margin: auto;
+      }
+
+      @media (min-width: 768px) {
+        .table {
+          width: 560px;
+          margin: auto;
+          
+        }
+      }
+
+    .searched-username {
+      text-decoration: none;
+      color: #666;
+      line-height: 32px;
+      margin-left: 8px;
+      font-size: 24px;
+    }
+
+    .searched-username:hover {
+      color: #666;
+      text-decoration: underline;
+    }
     </style>
     <!-- Custom styles for this template -->
   </head>
@@ -193,8 +238,8 @@
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
           <h4 class="my-0 mr-md-auto font-weight-normal"><a href="{{ url_for('app.home') }}" class="title-of-app">Instagram</a></h4>
           <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="{{ url_for('app.current_user_profile') }}">プロフィール</a>
-            <a class="p-2 text-dark" href="{{ url_for('app.signup') }}">新規アカウント</a>
+            <a class="p-2 text-dark" style="text-decoration: none;" href="{{ url_for('app.current_user_profile') }}">プロフィール</a>
+            <a class="p-2 text-dark" style="text-decoration: none;" href="{{ url_for('app.signup') }}">新規アカウント</a>
           </nav>
           {% block search %}
           {% endblock search %}

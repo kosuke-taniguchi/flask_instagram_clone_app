@@ -46,3 +46,8 @@ class EditPostForm(Form):
 class SearchForm(Form):
     search_content = StringField('', validators=[DataRequired()])
     submit = SubmitField('探す')
+
+
+class SearchFriendsForm(Form):
+    username = StringField('', validators=[DataRequired()])
+    submit = SubmitField('探す')

@@ -1,7 +1,10 @@
 from flaskr import db
 from flaskr import login_manager
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from flask_bcrypt import generate_password_hash, check_password_hash
+from sqlalchemy.orm import aliased
+from sqlalchemy import and_, or_
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -51,6 +54,14 @@ class User(db.Model, UserMixin):
     def has_liked_post(self, post):
         return PostLike.query.filter(PostLike.user_id == self.id, PostLike.post_id == post.id).count() > 0
 
+    @classmethod
+    def seach_by_username(cls, username):
+        return cls.query.filter(
+            cls.username.like(f'%{username}%'),
+        ).with_entities(
+            cls.id, cls.username, cls.picture_path,
+        )
+
 
 class Post(db.Model):
 
@@ -96,6 +107,7 @@ class Post(db.Model):
 class PostLike(db.Model):
 
     __tablename__ = 'post_likes'
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
@@ -104,6 +116,7 @@ class PostLike(db.Model):
 class Comment(db.Model):
 
     __tablename__ = 'comments'
+
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String(), index=True)
     content = db.Column(db.String(600), index=True)

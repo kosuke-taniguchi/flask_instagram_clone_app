@@ -9,6 +9,10 @@
     <img  class="top-image-of-user" src="{{ url_for('static', filename=current_user.picture_path) }}" alt="">
     {% endif %}
     <h1 class="jumbotron-heading">{{ current_user.username }}</h1>
+    <p class="ff-layout">
+      <a href="" class="following">フォロー</a>
+      <a href="" class="following">フォロワー</a>
+    </p>
   </div>
   <p>
     <a href="{{ url_for('app.edit_profile') }}" class="btn btn-primary my-2">編集</a>

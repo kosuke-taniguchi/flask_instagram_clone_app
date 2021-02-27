@@ -1,0 +1,58 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends 'base.html' %}
+
+{% block content %}
+<form method='POST' class="form-signin">
+    <h1 class="page-header">友達を探す</h1>
+    <dl>
+      {{ form.csrf_token }}
+      {{ render_field(form.username, class="form-control") }}
+      {{ form.submit(class="btn btn-lg btn-primary btn-block" ) }}
+    </dl>
+</form>
+
+{% if users %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>ユーザ画像</th>
+        <th>ユーザ名</th>
+      </tr>
+      </thead>
+    <tbody>
+      {% for user in users.items %}
+      <tr>
+        <th>{{ loop.index }}</th>
+        {% if user.picture_path %}
+        <th>
+          <a href="{{ url_for('app.user_profile', user_id=user.id) }}"><img class="user-image-small" src="{{ url_for('static', filename=user.picture_path) }}"></a>
+        </th>
+        {% else %}
+        <th></th>
+        {% endif %}
+        <th><a href="{{ url_for('app.user_profile', user_id=user.id) }}" class="searched-username">{{ user.username }}</a></th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<p>探している友達はいません</p>
+{% endif %}
+
+{% if users %}
+<div class="page-btn">
+  {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+      {% if users.page == page_num %}
+        <a class="btn btn-primary mb-4" href="{{ url_for('app.search_friends', page=page_num) }}">{{ page_num }}</a>
+      {% else %}
+        <a class="btn btn-outline-primary mb-4" href="{{ url_for('app.search_friends', page=page_num) }}">{{ page_num }}</a>
+      {% endif %}
+    {% else %}
+      ...
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock content %}r
